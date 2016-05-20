@@ -14,4 +14,8 @@ Wbc\AdministratorBundle\Entity\PalabraReservada:
             type: string
             length: '500'
             nullable: true
+    oneToMany:
+      ejecutar:
+        targetEntity: Ejecutar
+        mappedBy: palabra_reservada
     lifecycleCallbacks: {  }

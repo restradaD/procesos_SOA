@@ -1,0 +1,49 @@
+Wbc\AdministratorBundle\Entity\Ejecutar:
+    type: entity
+    table: ejecutar
+    repositoryClass: Wbc\AdministratorBundle\Repository\EjecutarRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nombreProceso:
+            type: string
+            length: 255
+            nullable: true
+            column: nombre_proceso
+        tiempo:
+            type: integer
+            nullable: true
+        memoria:
+            type: integer
+            nullable: true
+        terminado:
+            type: boolean
+        creacion:
+            type: datetime
+    manyToOne:
+      configuracion:
+        targetEntity: Configuracion
+        inversedBy: ejecutar
+        joinColumns:
+          configuracion_id:
+            referencedColumnName: id
+            nullable: false
+      palabra_reservada:
+        targetEntity: PalabraReservada
+        inversedBy: ejecutar
+        joinColumns:
+          palabra_reservada_id:
+            referencedColumnName: id
+            nullable: false
+      user:
+        targetEntity: User
+        inversedBy: ejecutar
+        joinColumns:
+          user_id:
+            referencedColumnName: id
+            nullable: false
+    lifecycleCallbacks: {  }

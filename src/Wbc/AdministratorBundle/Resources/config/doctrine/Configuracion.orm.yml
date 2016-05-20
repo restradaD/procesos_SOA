@@ -39,4 +39,7 @@ Wbc\AdministratorBundle\Entity\Configuracion:
       bloque:
         targetEntity: Bloque
         mappedBy: configuracion
+      ejecutar:
+        targetEntity: Ejecutar
+        mappedBy: configuracion
     lifecycleCallbacks: {  }
