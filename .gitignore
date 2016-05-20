@@ -61,3 +61,5 @@
 # Composer PHAR
 /composer.phar
 >>>>>>> 2a2d38413709270f5a033a47961eee7084418af0
+
+/nbproject/private/
