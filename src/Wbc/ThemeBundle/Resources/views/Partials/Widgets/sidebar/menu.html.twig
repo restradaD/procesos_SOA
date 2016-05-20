@@ -19,6 +19,16 @@
         </a>
     </li>
     
+    
+    <li {% if getMenuItem() == 'Bloque' %}class="active"{% endif %}>
+        <a href="{{ path('bloque_index') }}">
+            <span class="icon">
+                <i class="fa fa-group"></i>
+            </span>
+            {% trans %}Bloque{% endtrans %}
+        </a>
+    </li>
+    
     <li {% if getMenuItem() == 'user' %}class="active"{% endif %}>
         <a href="{{ path('user_index') }}">
             <span class="icon">

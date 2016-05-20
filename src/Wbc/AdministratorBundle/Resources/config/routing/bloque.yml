@@ -1,0 +1,23 @@
+bloque_index:
+    path:     /
+    defaults: { _controller: "WbcAdministratorBundle:Bloque:index" }
+    methods:  GET
+
+bloque_show:
+    path:     /{id}/show
+    defaults: { _controller: "WbcAdministratorBundle:Bloque:show" }
+    methods:  GET
+
+bloque_new:
+    path:     /new
+    defaults: { _controller: "WbcAdministratorBundle:Bloque:new" }
+    methods:  [GET, POST]
+
+bloque_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WbcAdministratorBundle:Bloque:edit" }
+    methods:  [GET, POST]
+
+bloque_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WbcAdministratorBundle:Bloque:delete" }

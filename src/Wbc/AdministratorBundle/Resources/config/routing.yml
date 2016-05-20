@@ -41,3 +41,7 @@ go:
 wbc_administrator_configuracion:
         resource: "@WbcAdministratorBundle/Resources/config/routing/configuracion.yml"
         prefix:   /configuracion
+        
+wbc_administrator_bloque:
+        resource: "@WbcAdministratorBundle/Resources/config/routing/bloque.yml"
+        prefix:   /bloque
