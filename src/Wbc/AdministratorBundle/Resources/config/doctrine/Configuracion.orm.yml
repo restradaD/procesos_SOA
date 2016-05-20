@@ -1,0 +1,30 @@
+Wbc\AdministratorBundle\Entity\Configuracion:
+    type: entity
+    table: configuracion
+    repositoryClass: Wbc\AdministratorBundle\Repository\ConfiguracionRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        proceso:
+            type: integer
+        memoria:
+            type: integer
+        cantidadBloque:
+            type: integer
+            column: cantidad_bloque
+        activo:
+            type: boolean
+        creacion:
+            type: datetime
+        fechaExpira:
+            type: datetime
+            nullable: true
+            column: fecha_expira
+        expira:
+            type: integer
+            nullable: true
+    lifecycleCallbacks: {  }

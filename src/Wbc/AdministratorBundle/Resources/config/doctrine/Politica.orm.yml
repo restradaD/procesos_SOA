@@ -1,6 +1,6 @@
 Wbc\AdministratorBundle\Entity\Politica:
     type: entity
-    table: null
+    table: politica
     repositoryClass: Wbc\AdministratorBundle\Repository\PoliticaRepository
     id:
         id:

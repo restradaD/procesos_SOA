@@ -1,6 +1,6 @@
 Wbc\AdministratorBundle\Entity\PalabraReservada:
     type: entity
-    table: null
+    table: palabra_reservada
     repositoryClass: Wbc\AdministratorBundle\Repository\PalabraReservadaRepository
     id:
         id:
