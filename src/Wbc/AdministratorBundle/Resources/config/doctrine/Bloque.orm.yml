@@ -1,0 +1,24 @@
+Wbc\AdministratorBundle\Entity\Bloque:
+    type: entity
+    table: bloque
+    repositoryClass: Wbc\AdministratorBundle\Repository\BloqueRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        espacio:
+            type: integer
+        creacion:
+            type: datetime
+    manyToOne:
+      configuracion:
+        targetEntity: Configuracion
+        inversedBy: bloque
+        joinColumns:
+          configuracion_id:
+            referencedColumnName: id
+            nullable: false
+    lifecycleCallbacks: {  }

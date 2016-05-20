@@ -254,4 +254,50 @@ class Configuracion
     {
         return $this->politica;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $bloque;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->bloque = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add bloque
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Bloque $bloque
+     *
+     * @return Configuracion
+     */
+    public function addBloque(\Wbc\AdministratorBundle\Entity\Bloque $bloque)
+    {
+        $this->bloque[] = $bloque;
+
+        return $this;
+    }
+
+    /**
+     * Remove bloque
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Bloque $bloque
+     */
+    public function removeBloque(\Wbc\AdministratorBundle\Entity\Bloque $bloque)
+    {
+        $this->bloque->removeElement($bloque);
+    }
+
+    /**
+     * Get bloque
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBloque()
+    {
+        return $this->bloque;
+    }
 }

@@ -35,4 +35,8 @@ Wbc\AdministratorBundle\Entity\Configuracion:
           politica_id:
             referencedColumnName: id
             nullable: false
+    oneToMany:
+      bloque:
+        targetEntity: Bloque
+        mappedBy: configuracion
     lifecycleCallbacks: {  }
