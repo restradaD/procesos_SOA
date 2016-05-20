@@ -225,4 +225,33 @@ class Configuracion
     {
         return $this->expira;
     }
+    /**
+     * @var \Wbc\AdministratorBundle\Entity\Politica
+     */
+    private $politica;
+
+
+    /**
+     * Set politica
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Politica $politica
+     *
+     * @return Configuracion
+     */
+    public function setPolitica(\Wbc\AdministratorBundle\Entity\Politica $politica)
+    {
+        $this->politica = $politica;
+
+        return $this;
+    }
+
+    /**
+     * Get politica
+     *
+     * @return \Wbc\AdministratorBundle\Entity\Politica
+     */
+    public function getPolitica()
+    {
+        return $this->politica;
+    }
 }

@@ -94,4 +94,50 @@ class Politica
 
         return $this;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $configuracion;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->configuracion = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add configuracion
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Configuracion $configuracion
+     *
+     * @return Politica
+     */
+    public function addConfiguracion(\Wbc\AdministratorBundle\Entity\Configuracion $configuracion)
+    {
+        $this->configuracion[] = $configuracion;
+
+        return $this;
+    }
+
+    /**
+     * Remove configuracion
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Configuracion $configuracion
+     */
+    public function removeConfiguracion(\Wbc\AdministratorBundle\Entity\Configuracion $configuracion)
+    {
+        $this->configuracion->removeElement($configuracion);
+    }
+
+    /**
+     * Get configuracion
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConfiguracion()
+    {
+        return $this->configuracion;
+    }
 }

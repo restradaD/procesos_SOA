@@ -14,4 +14,8 @@ Wbc\AdministratorBundle\Entity\Politica:
             type: string
             length: '500'
             nullable: true
+    oneToMany:
+      configuracion:
+        targetEntity: Configuracion
+        mappedBy: politica
     lifecycleCallbacks: {  }

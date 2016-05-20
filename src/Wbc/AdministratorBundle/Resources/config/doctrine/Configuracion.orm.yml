@@ -27,4 +27,12 @@ Wbc\AdministratorBundle\Entity\Configuracion:
         expira:
             type: integer
             nullable: true
+    manyToOne:
+      politica:
+        targetEntity: Politica
+        inversedBy: configuracion
+        joinColumns:
+          politica_id:
+            referencedColumnName: id
+            nullable: false
     lifecycleCallbacks: {  }
