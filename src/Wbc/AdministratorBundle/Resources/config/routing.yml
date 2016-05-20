@@ -45,3 +45,7 @@ wbc_administrator_configuracion:
 wbc_administrator_bloque:
         resource: "@WbcAdministratorBundle/Resources/config/routing/bloque.yml"
         prefix:   /bloque
+        
+wbc_administrator_ejecutar:
+        resource: "@WbcAdministratorBundle/Resources/config/routing/ejecutar.yml"
+        prefix:   /ejecutar

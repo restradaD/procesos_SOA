@@ -1,0 +1,23 @@
+ejecutar_index:
+    path:     /
+    defaults: { _controller: "WbcAdministratorBundle:Ejecutar:index" }
+    methods:  GET
+
+ejecutar_show:
+    path:     /{id}/show
+    defaults: { _controller: "WbcAdministratorBundle:Ejecutar:show" }
+    methods:  GET
+
+ejecutar_new:
+    path:     /new
+    defaults: { _controller: "WbcAdministratorBundle:Ejecutar:new" }
+    methods:  [GET, POST]
+
+ejecutar_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WbcAdministratorBundle:Ejecutar:edit" }
+    methods:  [GET, POST]
+
+ejecutar_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WbcAdministratorBundle:Ejecutar:delete" }
