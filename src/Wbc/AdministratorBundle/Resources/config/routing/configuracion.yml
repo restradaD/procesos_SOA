@@ -1,0 +1,23 @@
+configuracion_index:
+    path:     /
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:index" }
+    methods:  GET
+
+configuracion_show:
+    path:     /{id}/show
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:show" }
+    methods:  GET
+
+configuracion_new:
+    path:     /new
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:new" }
+    methods:  [GET, POST]
+
+configuracion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:edit" }
+    methods:  [GET, POST]
+
+configuracion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:delete" }

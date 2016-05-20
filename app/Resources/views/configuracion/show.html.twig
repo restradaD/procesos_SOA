@@ -1,0 +1,69 @@
+<h4>{{ 'General information' | trans }}</h4>
+
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            <th width="100px">Id</th>
+            <td width="100px">{{ configuracion.id }}</td>
+        </tr>
+        <tr>
+            <th width="100px">Proceso</th>
+            <td width="100px">{{ configuracion.proceso }}</td>
+        </tr>
+        <tr>
+            <th width="100px">Memoria</th>
+            <td width="100px">{{ configuracion.memoria }}</td>
+        </tr>
+        <tr>
+            <th width="100px">Cantidadbloque</th>
+            <td width="100px">{{ configuracion.cantidadBloque }}</td>
+        </tr>
+        <tr>
+            <th width="100px">Activo</th>
+            <td width="100px">{% if configuracion.activo %} {{ "Yes" | trans }} {% else %} {{ "No" | trans }} {% endif %}</td>
+        </tr>
+        <tr>
+            <th width="100px">Creacion</th>
+            <td width="100px">{% if configuracion.creacion %}{{ configuracion.creacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th width="100px">Fechaexpira</th>
+            <td width="100px">{% if configuracion.fechaExpira %}{{ configuracion.fechaExpira|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th width="100px">Expira</th>
+            <td width="100px">{{ configuracion.expira }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>{{ 'Changes' | trans }}</h4>
+<table class="table table-bordered">
+    <tbody>
+        {% for log in changes %}
+            <tr>
+                <th width="100px">{{ 'User' | trans }}</th>
+                <td>{{ log.user }}</td>
+                <th width="100px">{{ 'Date' | trans }}</th>
+                <td><span title="{{ log.createdat | date('Y-m-d H:i') }}">{{ log.createdat | ago }}</span></td>
+            </tr>
+            {% for innerChange in log.logChanges %}
+                <tr>
+                    {% if innerChange.old != '' or innerChange.new != '' %}
+                    <td colspan="4">
+                        <span class="">
+                            {% trans with {'%field%': innerChange.name, '%from%': innerChange.old | default('NOTHING') , '%to%': innerChange.new | default('NOTHING') } %} <span class='label label-info'>%field%</span> from <strong>%from%</strong> to <strong>%to%</strong> {% endtrans %}
+                        </span>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<script>
+    $('#infoModalLabel').html('Configuracion');
+
+</script>

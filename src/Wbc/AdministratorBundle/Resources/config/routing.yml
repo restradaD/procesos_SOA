@@ -37,3 +37,7 @@ cache_clear:
 go:
     path:     /go/{code}/
     defaults: { _controller: WbcAdministratorBundle:Default:go }
+    
+wbc_administrator_configuracion:
+        resource: "@WbcAdministratorBundle/Resources/config/routing/configuracion.yml"
+        prefix:   /configuracion
