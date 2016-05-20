@@ -46,4 +46,8 @@ Wbc\AdministratorBundle\Entity\Ejecutar:
           user_id:
             referencedColumnName: id
             nullable: false
+    oneToMany:
+      pendiente:
+        targetEntity: Pendiente
+        mappedBy: ejecutar
     lifecycleCallbacks: {  }

@@ -254,4 +254,50 @@ class Ejecutar
     {
         return $this->user;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $pendiente;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pendiente = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add pendiente
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Pendiente $pendiente
+     *
+     * @return Ejecutar
+     */
+    public function addPendiente(\Wbc\AdministratorBundle\Entity\Pendiente $pendiente)
+    {
+        $this->pendiente[] = $pendiente;
+
+        return $this;
+    }
+
+    /**
+     * Remove pendiente
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Pendiente $pendiente
+     */
+    public function removePendiente(\Wbc\AdministratorBundle\Entity\Pendiente $pendiente)
+    {
+        $this->pendiente->removeElement($pendiente);
+    }
+
+    /**
+     * Get pendiente
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPendiente()
+    {
+        return $this->pendiente;
+    }
 }

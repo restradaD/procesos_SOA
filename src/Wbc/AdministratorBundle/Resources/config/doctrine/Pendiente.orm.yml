@@ -1,0 +1,24 @@
+Wbc\AdministratorBundle\Entity\Pendiente:
+    type: entity
+    table: pendiente
+    repositoryClass: Wbc\AdministratorBundle\Repository\PendienteRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        completado:
+            type: boolean
+        creacion:
+            type: datetime
+    manyToOne:
+      ejecutar:
+        targetEntity: Ejecutar
+        inversedBy: pendiente
+        joinColumns:
+          ejecutar_id:
+            referencedColumnName: id
+            nullable: false
+    lifecycleCallbacks: {  }
