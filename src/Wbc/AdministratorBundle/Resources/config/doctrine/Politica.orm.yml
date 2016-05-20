@@ -1,0 +1,17 @@
+Wbc\AdministratorBundle\Entity\Politica:
+    type: entity
+    table: null
+    repositoryClass: Wbc\AdministratorBundle\Repository\PoliticaRepository
+    id:
+        id:
+            type: integer
+            id: true
+    fields:
+        nombre:
+            type: string
+            length: '200'
+        descripcion:
+            type: string
+            length: '500'
+            nullable: true
+    lifecycleCallbacks: {  }
