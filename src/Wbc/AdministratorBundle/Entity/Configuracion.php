@@ -46,6 +46,11 @@ class Configuracion
      * @var int
      */
     private $expira;
+    
+    
+    public function __toString() {
+        return $this->proceso;
+    }
 
 
     /**

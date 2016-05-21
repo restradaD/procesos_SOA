@@ -21,7 +21,11 @@ class PalabraReservada
      * @var string
      */
     private $descripcion;
-
+    
+    
+    public function __toString() {
+        return $this->nombre;
+    } 
 
     /**
      * Get id
