@@ -13,12 +13,21 @@
 
             <legend>Configuración</legend> 
 
-            <div class="form-group">
-                <label for="exampleInputFile">Cargar Archivo</label>
-                <input type="file" id="selectDocument">
-                <p class="help-block">Seleccionar archivo .config.</p>
-                <button class="btn btn-danger" type="button">Cargar</button>
-            </div> 
+
+            <form  method="post" id="carga_archivo" >
+
+
+                <div class="form-group">
+                    <label for="exampleInputFile">Cargar Archivo</label>
+                    <input type="file" id="selectDocument" name="ruta_config">
+                    <p class="help-block">Seleccionar archivo .config.</p>
+                    <button id="submit_file" class="btn btn-danger" type="button">Cargar</button>
+                </div> 
+
+                <input type="hidden" id="archivo_conf" name="archivo_conf"> 
+                <input type="hidden" id="ruta" name="ruta"> 
+            </form>
+
 
         </div>
         <div class="col-md-7">.col-md-7</div> 
@@ -31,10 +40,62 @@
 
 {% block extrascripts %}
     <script>
-        $('#selectDocument').change(function () {
+        $('#selectDocument').change(function (event) {
             var filePath = $(this).val();
-            console.log(filePath);
+
+            var tmppath = document.getElementById("selectDocument").path;
+            $('#archivo_conf').val(tmppath);
+            $('#ruta').val(filePath);
         });
+
+        $("#submit_file").on("click", function () {
+            saveConfigurationData();
+        });
+
+        function saveConfigurationData() {
+
+            var host = window.location.host;
+            var protocol = window.location.protocol;
+            var url_set = protocol + "//" + host + "/administrator/configuracion/carga";
+
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: url_set,
+                data: JSON.stringify(serializeObject($('#carga_archivo'))),
+                success: function (response) {
+
+
+
+                    if (response.code == 200) {
+                        show200(response);
+                        //setTimeout(function () {   location.reload(); }, 1000);
+                    } else {
+                        showErrorMessage(response);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var response = JSON.parse(jqXHR.responseText);
+                    showErrorMessage(response);
+
+
+                    //alert('principal en ele error ');
+                }
+            });
+        }
+
+        function show200(response) {
+            Messenger().post(response.msg + ", id del registro: " + response.recordset);
+        }
+
+        function showErrorMessage(response) {
+            Messenger().post({
+                message: response.error,
+                type: 'error',
+                showCloseButton: true
+            });
+        }
+
     </script>
 
 {% endblock %}

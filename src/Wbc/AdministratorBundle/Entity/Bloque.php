@@ -21,7 +21,11 @@ class Bloque
      * @var \DateTime
      */
     private $creacion;
-
+    
+    
+    public function __toString() {
+        return $this->espacio . "id " . $this->id;
+    }
 
     /**
      * Get id

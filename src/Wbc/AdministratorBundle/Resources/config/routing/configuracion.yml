@@ -26,3 +26,8 @@ configuracion_terminal:
     path:     /terminal
     defaults: { _controller: "WbcAdministratorBundle:Configuracion:terminal" }
     methods:  [GET, POST]
+    
+configuracion_carga:
+    path:     /carga
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:agregaConfiguracion" }
+    methods:  [GET, POST]
