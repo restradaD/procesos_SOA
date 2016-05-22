@@ -13,10 +13,6 @@
     {{ parent() }}
     <h1 class="page-title pull-left">{{ 'Ejecutar list' | trans }}</h1>
 
-    <div class="pull-right">
-        <a data-parent="#content" class="btn btn-primary btn-lg mb-xs" href="{{ path('ejecutar_new') }}">{{ 'Create new' | trans }}</a>
-    </div>
-
     <div class="clearfix"></div>
     <br>
 
@@ -120,8 +116,7 @@
                         "sSortDescending": ": {{ 'activate to sort column descending' | trans }}"
                     }
                 },
-                "oClasses": {
-                    "sFilter": "pull-right",
+                "oClasses": { 
                     "sFilterInput": "form-control input-rounded ml-sm"
                 },
                 "aoColumns": unsortableColumns,

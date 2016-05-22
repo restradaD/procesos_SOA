@@ -3,7 +3,7 @@
 {% block breadcrumb %}
     {{ parent() }}
     <li class="active">{{ 'Configuracion list' | trans }}</li>
-{% endblock %}
+    {% endblock %}
 
 {% block title %}
     {{ 'Configuracion list' | trans }}
@@ -31,59 +31,63 @@
             <div class="mt">
                 <table id="datatable-table" class="table table-striped table-hover">
                     <thead>
-                    <tr>                                                                                                                        
-                        <th class="no-sort">{{ 'Proceso' | trans }}</th>                                                                                                                        
-                        <th class="hidden-xs">{{ 'Memoria' | trans }}</th>                                                                                                                        
-                        <th class="hidden-xs">{{ 'Cantidadbloque' | trans }}</th>                                                                                                                        
-                        <th class="hidden-xs">{{ 'Activo' | trans }}</th>                                                                                                                        
-                        <th class="hidden-xs">{{ 'Creacion' | trans }}</th>                                                                                                                        
-                        <th class="hidden-xs">{{ 'Fechaexpira' | trans }}</th>                                                                                                                        
-                        <th class="hidden-xs">{{ 'Expira' | trans }}</th>
-                        <th width="120" class="no-sort">{{ 'Actions' | trans }}</th>
-                    </tr>
+                        <tr>                                                                                                                        
+                            <th class="no-sort">{{ 'Proceso' | trans }}</th>                                                                                                                        
+                            <th class="hidden-xs">{{ 'Memoria' | trans }}</th>                                                                                                                        
+                            <th class="hidden-xs">{{ 'Cantidadbloque' | trans }}</th>                                                                                                                        
+                            <th class="hidden-xs">{{ 'Activo' | trans }}</th>                                                                                                                        
+                            <th class="hidden-xs">{{ 'Creacion' | trans }}</th>                                                                                                                        
+                            <th class="hidden-xs">{{ 'Fechaexpira' | trans }}</th>                                                                                                                        
+                            <th class="hidden-xs">{{ 'Expira' | trans }}</th>
+                            <th width="120" class="no-sort">{{ 'Actions' | trans }}</th>
+                        </tr>
                     </thead>
                     <tbody>
 
-                    {% for configuracion in configuracions %}
-                        <tr>
-                                                                                                    
-                    
-                                                                                                    
-                    
-                            <td class="no-sort">
-                                <span class="fw-semi-bold">
-                                    <a href="{{ path('configuracion_show', { 'id': configuracion.id }) }}" data-remote="false" class="modal-info" data-toggle="modal" data-target="#infoModal">{{ configuracion.proceso }}</a>
-                                </span>
-                            </td>                    
-                                                                                                    
-                    
-                            <td class="hidden-xs">{{ configuracion.memoria }}</td>                    
-                                                                                                    
-                    
-                            <td class="hidden-xs">{{ configuracion.cantidadBloque }}</td>                    
-                                                                                                    
-                    
-                            <td class="hidden-xs">{% if configuracion.activo %} {{ "Yes" | trans }} {% else %} {{ "No" | trans }} {% endif %}</td>                    
-                                                                                                    
-                    
-                            <td class="hidden-xs">{% if configuracion.creacion %}{{ configuracion.creacion|date('Y-m-d H:i:s') }}{% endif %}</td>                    
-                                                                                                    
-                    
-                            <td class="hidden-xs">{% if configuracion.fechaExpira %}{{ configuracion.fechaExpira|date('Y-m-d H:i:s') }}{% endif %}</td>                    
-                                                                                                    
-                    
-                            <td class="hidden-xs">{{ configuracion.expira }}</td>
-                            <td class="no-sort">
-                                <a data-parent="#content" data-toggle="tooltip" data-placement="top" title="{{ 'Edit' | trans }}" data-original-title="{{ 'Edit' | trans }}" class="btn btn-default mb-xs" role="button" href="{{ path('configuracion_edit', { 'id': configuracion.id }) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                &nbsp;
-                                <a data-parent="#content" data-toggle="tooltip" data-placement="top" title="{{ 'Delete' | trans }}" data-original-title="{{ 'Delete' | trans }}" class="btn btn-danger mb-xs btn-delete" role="button" href="{{ path('configuracion_delete', { 'id': configuracion.id }) }}">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>                    
-                        </tr>
-                    {% endfor %}
+                        {% for configuracion in configuracions %}
+                            <tr>
+
+
+
+
+                                <td class="no-sort">
+                                    <span class="fw-semi-bold">
+                                        <a href="{{ path('configuracion_show', { 'id': configuracion.id }) }}" data-remote="false" class="modal-info" data-toggle="modal" data-target="#infoModal">{{ configuracion.proceso }}</a>
+                                    </span>
+                                </td>                    
+
+
+                                <td class="hidden-xs">{{ configuracion.memoria }}</td>                    
+
+
+                                <td class="hidden-xs">{{ configuracion.cantidadBloque }}</td>                    
+
+
+                                <td class="hidden-xs">{% if configuracion.activo %} {{ "Yes" | trans }} {% else %} {{ "No" | trans }} {% endif %}</td>                    
+
+
+                                <td class="hidden-xs">{% if configuracion.creacion %}{{ configuracion.creacion|date('Y-m-d H:i:s') }}{% endif %}</td>                    
+
+
+                                <td class="hidden-xs">{% if configuracion.fechaExpira %}{{ configuracion.fechaExpira|date('Y-m-d H:i:s') }}{% endif %}</td>                    
+
+
+                                <td class="hidden-xs">{{ configuracion.expira }}</td>
+                                <td class="no-sort">
+                                    <a data-parent="#content" data-toggle="tooltip" data-placement="top" title="{{ 'Edit' | trans }}" data-original-title="{{ 'Edit' | trans }}" class="btn btn-default mb-xs" role="button" href="{{ path('configuracion_edit', { 'id': configuracion.id }) }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    &nbsp;
+                                    <a data-parent="#content" data-toggle="tooltip" data-placement="top" title="{{ 'Delete' | trans }}" data-original-title="{{ 'Delete' | trans }}" class="btn btn-danger mb-xs btn-delete" role="button" href="{{ path('configuracion_delete', { 'id': configuracion.id }) }}">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                    &nbsp;
+                                    <a data-parent="#content" data-toggle="tooltip" data-placement="top" title="{{ 'Ejecutar Comando' | trans }}" data-original-title="{{ 'Ejecutar Comando' | trans }}" class="btn btn-default mb-xs" role="button" href="{{ path('ejecutar_new', { 'id': configuracion.id }) }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>                    
+                            </tr>
+                        {% endfor %}
 
                     </tbody>
                 </table>
@@ -92,11 +96,11 @@
     </section>
 
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
 
             var unsortableColumns = [];
-            $('#datatable-table').find('thead th').each(function(){
-                if ($(this).hasClass( 'no-sort')){
+            $('#datatable-table').find('thead th').each(function () {
+                if ($(this).hasClass('no-sort')) {
                     unsortableColumns.push({"bSortable": false});
                 } else {
                     unsortableColumns.push(null);
@@ -112,19 +116,19 @@
                     "infoEmpty": "{{ 'No records available' | trans }}",
                     "sInfoEmpty": "{{ 'Showing' | trans }} <strong>0 {{ 'to' | trans }} 0 {{ 'of' | trans }} 0</strong> {{ 'entries' | trans }}",
                     "infoFiltered": "({{ 'filtered from' | trans }} _MAX_ {{ 'total records' | trans }})",
-                    "sProcessing":     "{{ 'Processing...' | trans }}",
+                    "sProcessing": "{{ 'Processing...' | trans }}",
                     "sLoadingRecords": "{{ 'Loading...' | trans }}",
                     "sProcessing":     "{{ 'Processing...' | trans }}",
-                    "sSearch":         "{{ 'Search:' | trans }}",
-                    "sZeroRecords":    "{{ 'No matching records found' | trans }}",
+                            "sSearch": "{{ 'Search:' | trans }}",
+                    "sZeroRecords": "{{ 'No matching records found' | trans }}",
                     "oPaginate": {
-                        "sFirst":    "{{ 'First' | trans }}",
-                        "sLast":     "{{ 'Last' | trans }}",
-                        "sNext":     "{{ 'Next' | trans }}",
+                        "sFirst": "{{ 'First' | trans }}",
+                        "sLast": "{{ 'Last' | trans }}",
+                        "sNext": "{{ 'Next' | trans }}",
                         "sPrevious": "{{ 'Previous' | trans }}"
                     },
                     "oAria": {
-                        "sSortAscending":  ": {{ 'activate to sort column ascending' | trans }}",
+                        "sSortAscending": ": {{ 'activate to sort column ascending' | trans }}",
                         "sSortDescending": ": {{ 'activate to sort column descending' | trans }}"
                     }
                 },

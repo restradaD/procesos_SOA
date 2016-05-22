@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Wbc\AdministratorBundle\Entity\Ejecutar;
+use Wbc\AdministratorBundle\Entity\Configuracion;
 use Wbc\AdministratorBundle\Form\EjecutarType;
 
 /**
@@ -34,8 +35,8 @@ class EjecutarController extends Controller
      * Creates a new Ejecutar entity.
      *
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Configuracion $configuracion, Request $request)
+    { 
         $this->get('Services')->setMenuItem('Ejecutar');
 
         $ejecutar = new Ejecutar();
@@ -46,6 +47,8 @@ class EjecutarController extends Controller
             
             $now = new \DateTime('now');            
             $ejecutar->setCreacion($now);
+            $ejecutar->setConfiguracion($configuracion);
+            $ejecutar->setUser($this->getUser());
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($ejecutar);

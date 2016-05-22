@@ -9,7 +9,7 @@ ejecutar_show:
     methods:  GET
 
 ejecutar_new:
-    path:     /new
+    path:     /{id}/new
     defaults: { _controller: "WbcAdministratorBundle:Ejecutar:new" }
     methods:  [GET, POST]
 

@@ -18,14 +18,14 @@ class EjecutarType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-//            ->add('nombreProceso', null, ['attr' => ['class' => 'form-control']])
+            ->add('nombreProceso', null, ['attr' => ['class' => 'form-control']])
             ->add('tiempo', null, ['attr' => ['class' => 'form-control']])
             ->add('memoria', null, ['attr' => ['class' => 'form-control']])
             ->add('terminado', null, ['attr' => ['class' => '']])
 //            ->add('creacion', DateTimeType::class, ['format' => 'yyyy-MM-dd HH:mm', 'widget' => 'single_text', 'attr' => ['class' => 'datetimepicker form-control']])
-            ->add('configuracion', null, ['attr' => ['class' => 'select2 form-control']])
+//            ->add('configuracion', null, ['attr' => ['class' => 'select2 form-control']])
             ->add('palabra_reservada', null, ['attr' => ['class' => 'select2 form-control']])
-            ->add('user', null, ['attr' => ['class' => 'select2 form-control']])
+//            ->add('user', null, ['attr' => ['class' => 'select2 form-control']])
         ;
     }
     
