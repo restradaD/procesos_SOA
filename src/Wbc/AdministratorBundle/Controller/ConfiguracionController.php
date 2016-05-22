@@ -4,7 +4,6 @@ namespace Wbc\AdministratorBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Wbc\AdministratorBundle\Entity\Configuracion;
 use Wbc\AdministratorBundle\Form\ConfiguracionType;
 
@@ -12,30 +11,38 @@ use Wbc\AdministratorBundle\Form\ConfiguracionType;
  * Configuracion controller.
  *
  */
-class ConfiguracionController extends Controller
-{
+class ConfiguracionController extends Controller {
+
     /**
      * Lists all Configuracion entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $this->get('Services')->setMenuItem('Configuracion');
         $em = $this->getDoctrine()->getManager();
 
         $configuracions = $em->getRepository('WbcAdministratorBundle:Configuracion')->findAll();
 
         return $this->render('configuracion/index.html.twig', array(
-            'configuracions' => $configuracions,
+                    'configuracions' => $configuracions,
         ));
+    }
+
+    /**
+     * Principal function
+     * view
+     * @return type
+     */
+    public function terminalAction() {
+        $this->get('Services')->setMenuItem('Terminal');
+        return $this->render('configuracion/terminal.html.twig');
     }
 
     /**
      * Creates a new Configuracion entity.
      *
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $this->get('Services')->setMenuItem('Configuracion');
 
         $configuracion = new Configuracion();
@@ -43,10 +50,10 @@ class ConfiguracionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            $now = new \DateTime('now');            
+
+            $now = new \DateTime('now');
             $configuracion->setCreacion($now);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($configuracion);
             $em->flush();
@@ -57,8 +64,8 @@ class ConfiguracionController extends Controller
         }
 
         return $this->render('configuracion/new.html.twig', array(
-            'configuracion' => $configuracion,
-            'form' => $form->createView(),
+                    'configuracion' => $configuracion,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -66,15 +73,14 @@ class ConfiguracionController extends Controller
      * Finds and displays a Configuracion entity.
      *
      */
-    public function showAction(Configuracion $configuracion)
-    {
+    public function showAction(Configuracion $configuracion) {
 
         $this->get('Services')->setMenuItem('Configuracion');
         $changes = $this->get('Services')->getLogsByEntity($configuracion);
 
         return $this->render('configuracion/show.html.twig', array(
-            'configuracion' => $configuracion,
-            'changes' => $changes,
+                    'configuracion' => $configuracion,
+                    'changes' => $changes,
         ));
     }
 
@@ -82,8 +88,7 @@ class ConfiguracionController extends Controller
      * Displays a form to edit an existing Configuracion entity.
      *
      */
-    public function editAction(Request $request, Configuracion $configuracion)
-    {
+    public function editAction(Request $request, Configuracion $configuracion) {
         $this->get('Services')->setMenuItem('Configuracion');
         $editForm = $this->createForm('Wbc\AdministratorBundle\Form\ConfiguracionType', $configuracion);
         $editForm->handleRequest($request);
@@ -99,8 +104,8 @@ class ConfiguracionController extends Controller
         }
 
         return $this->render('configuracion/edit.html.twig', array(
-            'configuracion' => $configuracion,
-            'form'        => $editForm->createView()
+                    'configuracion' => $configuracion,
+                    'form' => $editForm->createView()
         ));
     }
 
@@ -108,8 +113,7 @@ class ConfiguracionController extends Controller
      * Deletes a Configuracion entity.
      *
      */
-    public function deleteAction(Request $request, Configuracion $configuracion)
-    {
+    public function deleteAction(Request $request, Configuracion $configuracion) {
         $em = $this->getDoctrine()->getManager();
         $em->remove($configuracion);
         $em->flush();

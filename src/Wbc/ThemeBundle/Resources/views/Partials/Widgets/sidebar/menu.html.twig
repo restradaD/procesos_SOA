@@ -8,6 +8,15 @@
             {% trans %}Dashboard{% endtrans %}
         </a>
 
+    </li>    
+       
+    <li {% if getMenuItem() == 'Terminal' %}class="active"{% endif %}>
+        <a href="{{ path('configuracion_terminal') }}">
+            <span class="icon">
+                <i class="fa fa-group"></i>
+            </span>
+            {% trans %}Terminal{% endtrans %}
+        </a>
     </li>
     
     <li {% if getMenuItem() == 'Configuracion' %}class="active"{% endif %}>

@@ -21,3 +21,8 @@ configuracion_edit:
 configuracion_delete:
     path:     /{id}/delete
     defaults: { _controller: "WbcAdministratorBundle:Configuracion:delete" }
+    
+configuracion_terminal:
+    path:     /terminal
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:terminal" }
+    methods:  [GET, POST]
