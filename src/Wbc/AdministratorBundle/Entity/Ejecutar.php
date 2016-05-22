@@ -36,7 +36,11 @@ class Ejecutar
      * @var \DateTime
      */
     private $creacion;
-
+    
+    
+    public function __toString() {
+        return $this->nombreProceso;
+    }
 
     /**
      * Get id

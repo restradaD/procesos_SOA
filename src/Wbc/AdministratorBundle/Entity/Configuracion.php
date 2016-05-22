@@ -49,7 +49,7 @@ class Configuracion
     
     
     public function __toString() {
-        return $this->proceso;
+        return $this->proceso . $this->politica->getNombre();
     }
 
 
