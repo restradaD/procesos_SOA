@@ -8,6 +8,8 @@ use Wbc\AdministratorBundle\Entity\Configuracion;
 use Wbc\AdministratorBundle\Form\ConfiguracionType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Wbc\AdministratorBundle\Entity\Bloque;
+use Wbc\AdministratorBundle\Entity\Ejecutar;
+use Wbc\AdministratorBundle\Form\EjecutarType;
 
 /**
  * Configuracion controller.
@@ -42,7 +44,7 @@ class ConfiguracionController extends Controller {
      * view
      * @return type
      */
-    public function terminalAction() {
+    public function terminalAction(Request $request) {
 
         $configuracion = $this->traeUltimaConfiguracion();
         $bloques = "vacio";
@@ -53,10 +55,33 @@ class ConfiguracionController extends Controller {
             $bloques = $this->getBloquesByConfiguracion($ultimaConfiguracion->getId());
         }
 
+        $ejecutar = new Ejecutar();
+        $form = $this->createForm('Wbc\AdministratorBundle\Form\EjecutarType', $ejecutar);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $ultimaConfig = $this->traeUltimaConfiguracion();
+            if (empty($ultimaConfig)) {
+                $this->get('Services')->setFlash('danger', $this->get('translator')->trans('No existe Configuracion en vigencia'));
+                return $this->redirectToRoute('configuracion_terminal');
+            }
+
+            if (!$this->buscaPolitica($form->getData(), $ultimaConfig, $ejecutar)) {
+                $this->get('Services')->setFlash('danger', $this->get('translator')->trans($this->lastError));
+                return $this->redirectToRoute('configuracion_terminal');
+            }
+
+            $this->get('Services')->addFlash('success', $this->get('translator')->trans('Se ha ejecutado el comando correctamente!'));
+
+            return $this->redirectToRoute('configuracion_terminal');
+        }
+
         $this->get('Services')->setMenuItem('Terminal');
         return $this->render('configuracion/terminal.html.twig', array(
                     'configuracion' => $ultimaConfiguracion,
                     'bloques' => $bloques,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -444,4 +469,128 @@ class ConfiguracionController extends Controller {
         return $color;
     }
 
+    //INICIO DE LAS POLITICAS DE AJUSTE
+
+    /**
+     * opera segun la politica de la configuracion
+     * @param object $form
+     * @param entity $configuracion
+     * @param entity $ejecutar
+     */
+    private function buscaPolitica($form, $configuracion, $ejecutar) {
+
+
+        $politica = $configuracion->getPolitica()->getId(); //$politica = $configuracion->getPolitica()->getNombre();
+
+
+        if (intval($politica) === 1) { //Mejor ajuste
+            return $this->mejorAjuste($form, $configuracion, $ejecutar);
+        } elseif (intval($politica) === 2) { //Primer ajuste
+            return $this->mejorAjuste($form, $configuracion, $ejecutar);
+        }
+        //Peor ajuste
+        return $this->mejorAjuste($form, $configuracion, $ejecutar);
+    }
+
+    /**
+     * Aplica la politica de Mejor ajuste en un bloque de memoria
+     * @param object $form
+     * @param entity $configuracion
+     * @param entity $ejecutar
+     * @return boolean
+     */
+    private function mejorAjuste($form, $configuracion, $ejecutar) {
+
+        $em = $this->getDoctrine()->getManager();
+        $bloques = $em->getRepository('Wbc\AdministratorBundle\Entity\Bloque')->findBy(array('configuracion' => $configuracion->getId()));
+
+        if (empty($bloques)) {
+            $this->lastError = 'La configuracion actual no tien bloques de memoria';
+            return false;
+        }
+
+        $resta = 0;
+        $pasan = "";
+        $operaciones = "";
+
+        foreach ($bloques as $bloque) {
+
+            if (empty($bloque->getDisponible())) {
+                $resta = intval($bloque->getEspacio()) - intval($form->getMemoria());
+            } else {
+                $resta = intval($bloque->getDisponible()) - intval($form->getMemoria());
+            }
+
+            if ($resta >= 0) {
+                $pasan[] = ['bloque' => $bloque, 'resultado' => $resta];
+                $operaciones[] = [$resta];
+            }
+        }
+
+        if (empty($pasan)) {
+            $this->lastError = 'El proceso es demasiado grande no cambe en ningun bloque de memoria';
+            return false;
+        }
+        $menor = min($operaciones);
+
+        return $this->guardaBloque($menor[0], $pasan, $ejecutar, $form->getMemoria());
+    }
+
+    /**
+     * Trae la entitdad bloque segun la politica para guardar el registro
+     * @param int $menor
+     * @param array $bloques
+     * @param entity $ejecutar
+     * @return boolean
+     */
+    private function guardaBloque($menor, $bloques, $ejecutar, $ocupa) {
+
+        $entidadBloque = "";
+        foreach ($bloques as $bloque) {
+            if (intval($bloque["resultado"]) === intval($menor)) {
+                $entidadBloque = $bloque["bloque"];
+                break;
+            }
+        }
+
+        $usado = intval($entidadBloque->getUsado()) + intval($ocupa);
+        $disponible = intval($entidadBloque->getEspacio()) - $usado;
+
+        return $this->flushEntityBloque($ejecutar, $entidadBloque, $usado, $disponible);
+    }
+
+    /**
+     * Guarda el registro ingresado e la terminal y actualiza el bloque de memoria segun la politica
+     * @param entity $ejecutar
+     * @param entity $bloque
+     * @param int $usado
+     * @param int $disponible
+     * @return boolean
+     */
+    private function flushEntityBloque($ejecutar, $bloque, $usado, $disponible) {
+//        dump($usado);
+//        dump($disponible);
+//        dump($bloque);
+//        dump($ejecutar);
+//        exit();
+
+        $now = new \DateTime('now');
+        $ejecutar->setCreacion($now);
+        $ejecutar->setBloque($bloque);
+        $ejecutar->setUser($this->getUser());
+        $ejecutar->setTerminado(false);
+
+        //Actualiza campos en el bloque
+        $bloque->setUsado($usado);
+        $bloque->setDisponible($disponible);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($ejecutar);
+        $em->persist($bloque);
+        $em->flush();
+
+        return true;
+    }
+
+    //FIN DE LAS POLITICAS DE AJUSTE
 }

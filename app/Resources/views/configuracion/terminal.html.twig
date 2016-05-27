@@ -30,16 +30,81 @@
 
 
         </div>
-        <div class="col-md-7">.col-md-7</div> 
+        <div class="col-md-7">
+            <div id="chart_div" style="width: 500px; height: 500px;"></div>
+        </div> 
 
 
     </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <section class="widget">
+
+                <div class="widget-body">
+                    {{ form_start(form, { 'attr': { 'role': 'form' } }) }}
+                    {{ form_errors(form) }}
+
+                    <fieldset>
+                        <legend>Terminal de configuración</legend>
+
+                        <div class="form-group col-md-3">
+                            {{ form_label(form.nombreProceso) }}
+                            {{ form_errors(form.nombreProceso) }}
+                            {{ form_widget(form.nombreProceso) }}
+                        </div>
+                        <div class="form-group col-md-3">
+                            {{ form_label(form.tiempo) }}
+                            {{ form_errors(form.tiempo) }}
+                            {{ form_widget(form.tiempo) }}
+                        </div>
+                        <br></br>
+                        <div class="form-group col-md-3">
+                            {{ form_label(form.memoria) }}
+                            {{ form_errors(form.memoria) }}
+                            {{ form_widget(form.memoria) }}
+                        </div> 
+                        <div class="form-group col-md-3">
+                            {{ form_label(form.palabra_reservada) }}
+                            {{ form_errors(form.palabra_reservada) }}
+                            {{ form_widget(form.palabra_reservada) }}
+                        </div>
+                    </fieldset>
+
+                    <div class="hide">
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary btn-rounded pull-right btn-submit" style="margin-left: 5px;" data-gerund="{{ 'Saving...' | trans }}" value="{{ 'Save' | trans }}" />
+                        <a href="{{ path('user_index') }}" class="btn btn-default btn-rounded pull-right">{{ 'Cancel' | trans }}</a>
+                        <div class="clearfix"></div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    {% javascripts output='js/forms.js' filter="?jsqueeze"
+    'bundles/wbctheme/js/form-elements.js'%}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
 
 {% endblock %}
 
 {% block extrascripts %}
     <script>
+        //google charts
+
+        $("ejecutar_nombreProceso").prop('required', true);
+        $("ejecutar_tiempo").prop('required', true);
+        $("ejecutar_memoria").prop('required', true);
+
+
         $('#selectDocument').change(function (event) {
             var filePath = $(this).val();
 
