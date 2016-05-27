@@ -372,6 +372,8 @@ class ConfiguracionController extends Controller {
             $bloqeEntity->setConfiguracion($this->configuracionEntity);
             $bloqeEntity->setEspacio($bloque["valor"]);
             $bloqeEntity->setCreacion($now);
+            $bloqeEntity->setDisponible(0);
+            $bloqeEntity->setUsado(0);
 
             $em->persist($bloqeEntity);
         }
@@ -515,10 +517,10 @@ class ConfiguracionController extends Controller {
 
         foreach ($bloques as $bloque) {
 
-            if (!empty($bloque->getDisponible()) || $bloque->getDisponible() >= 0) {
-                $resta = intval($bloque->getDisponible()) - intval($form->getMemoria());
-            } else {
+            if ($bloque->getUsado() <= 0) {
                 $resta = intval($bloque->getEspacio()) - intval($form->getMemoria());
+            } else {
+                $resta = intval($bloque->getDisponible()) - intval($form->getMemoria());
             }
 
             if ($resta >= 0) {
@@ -548,8 +550,9 @@ class ConfiguracionController extends Controller {
         if ($ajuste === 'mejorAjuste') {
             $menor = min($operaciones);
             return $menor;
-        } elseif ($ajuste === 'mejorAjuste') {
-            
+        } elseif ($ajuste === 'primerAjuste') {
+            $primer = $operaciones[0];
+            return $primer;
         }
 
         $mayor = max($operaciones);
