@@ -25,11 +25,11 @@ Wbc\AdministratorBundle\Entity\Ejecutar:
         creacion:
             type: datetime
     manyToOne:
-      configuracion:
-        targetEntity: Configuracion
+      bloque:
+        targetEntity: Bloque
         inversedBy: ejecutar
         joinColumns:
-          configuracion_id:
+          bloque_id:
             referencedColumnName: id
             nullable: false
       palabra_reservada:

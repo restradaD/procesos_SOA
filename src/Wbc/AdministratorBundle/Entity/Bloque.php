@@ -84,6 +84,53 @@ class Bloque
     {
         return $this->creacion;
     }
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ejecutar;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ejecutar = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ejecutar
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Ejecutar $ejecutar
+     *
+     * @return Bloque
+     */
+    public function addEjecutar(\Wbc\AdministratorBundle\Entity\Ejecutar $ejecutar)
+    {
+        $this->ejecutar[] = $ejecutar;
+
+        return $this;
+    }
+
+    /**
+     * Remove ejecutar
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Ejecutar $ejecutar
+     */
+    public function removeEjecutar(\Wbc\AdministratorBundle\Entity\Ejecutar $ejecutar)
+    {
+        $this->ejecutar->removeElement($ejecutar);
+    }
+
+    /**
+     * Get ejecutar
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEjecutar()
+    {
+        return $this->ejecutar;
+    }
     /**
      * @var \Wbc\AdministratorBundle\Entity\Configuracion
      */

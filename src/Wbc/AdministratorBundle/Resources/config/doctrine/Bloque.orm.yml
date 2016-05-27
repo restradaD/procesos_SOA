@@ -21,4 +21,8 @@ Wbc\AdministratorBundle\Entity\Bloque:
           configuracion_id:
             referencedColumnName: id
             nullable: false
+    oneToMany:
+      ejecutar:
+        targetEntity: Ejecutar
+        mappedBy: bloque
     lifecycleCallbacks: {  }

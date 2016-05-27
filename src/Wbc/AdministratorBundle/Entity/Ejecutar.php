@@ -304,4 +304,33 @@ class Ejecutar
     {
         return $this->pendiente;
     }
+    /**
+     * @var \Wbc\AdministratorBundle\Entity\Bloque
+     */
+    private $bloque;
+
+
+    /**
+     * Set bloque
+     *
+     * @param \Wbc\AdministratorBundle\Entity\Bloque $bloque
+     *
+     * @return Ejecutar
+     */
+    public function setBloque(\Wbc\AdministratorBundle\Entity\Bloque $bloque)
+    {
+        $this->bloque = $bloque;
+
+        return $this;
+    }
+
+    /**
+     * Get bloque
+     *
+     * @return \Wbc\AdministratorBundle\Entity\Bloque
+     */
+    public function getBloque()
+    {
+        return $this->bloque;
+    }
 }
