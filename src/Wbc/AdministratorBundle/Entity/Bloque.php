@@ -160,4 +160,62 @@ class Bloque
     {
         return $this->configuracion;
     }
+    /**
+     * @var integer
+     */
+    private $usado;
+
+    /**
+     * @var integer
+     */
+    private $disponible;
+
+
+    /**
+     * Set usado
+     *
+     * @param integer $usado
+     *
+     * @return Bloque
+     */
+    public function setUsado($usado)
+    {
+        $this->usado = $usado;
+
+        return $this;
+    }
+
+    /**
+     * Get usado
+     *
+     * @return integer
+     */
+    public function getUsado()
+    {
+        return $this->usado;
+    }
+
+    /**
+     * Set disponible
+     *
+     * @param integer $disponible
+     *
+     * @return Bloque
+     */
+    public function setDisponible($disponible)
+    {
+        $this->disponible = $disponible;
+
+        return $this;
+    }
+
+    /**
+     * Get disponible
+     *
+     * @return integer
+     */
+    public function getDisponible()
+    {
+        return $this->disponible;
+    }
 }

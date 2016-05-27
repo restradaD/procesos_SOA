@@ -11,6 +11,10 @@ Wbc\AdministratorBundle\Entity\Bloque:
     fields:
         espacio:
             type: integer
+        usado:
+            type: integer
+        disponible:
+            type: integer
         creacion:
             type: datetime
     manyToOne:
