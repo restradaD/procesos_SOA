@@ -23,6 +23,7 @@ class ConfiguracionController extends Controller {
     private $numerodebloques;
     private $lastError;
     private $configuracionEntity;
+    private $eliminaProcesoM;
 
     /**
      * Lists all Configuracion entities.
@@ -72,7 +73,11 @@ class ConfiguracionController extends Controller {
                 return $this->redirectToRoute('configuracion_terminal');
             }
 
-            $this->get('Services')->addFlash('success', $this->get('translator')->trans('Se ha ejecutado el comando correctamente!'));
+            if (!empty($this->eliminaProcesoM)) {
+                $this->get('Services')->addFlash('success', $this->get('translator')->trans($this->eliminaProcesoM));
+            } else {
+                $this->get('Services')->addFlash('success', $this->get('translator')->trans('Se ha ejecutado el comando correctamente!'));
+            }
 
             return $this->redirectToRoute('configuracion_terminal');
         }
@@ -511,6 +516,10 @@ class ConfiguracionController extends Controller {
             return false;
         }
 
+        if (intval($form->getPalabraReservada()->getId() === 1)) {
+            return $this->eliminaProceso($form, $bloques);
+        }
+
         $resta = 0;
         $pasan = "";
         $operaciones = "";
@@ -611,6 +620,58 @@ class ConfiguracionController extends Controller {
         $em->persist($ejecutar);
         $em->persist($bloque);
         $em->flush();
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param object $form
+     * @param array $bloques
+     * @return boolean
+     */
+    private function eliminaProceso($form, $bloques) {
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($bloques as $bloque) {
+
+            $procesos = $em->getRepository('Wbc\AdministratorBundle\Entity\Ejecutar')->findBy(array('bloque' => $bloque->getId()));
+
+            foreach ($procesos as $proceso) {
+                $nombreProceso = $proceso->getNombreProceso();
+                $terminalNombreProceso = $form->getNombreProceso();
+
+                if ($nombreProceso === $terminalNombreProceso) {
+                    return $this->flushEliminaProceso($proceso, $bloque);
+                }
+            }
+        }
+        $this->lastError = 'proceso no existe en base de datos';
+        return false;
+    }
+
+    /**
+     * Elimina proceso ingresado en consola
+     * @param entity $proceso
+     * @param entity $bloque
+     * @return boolean
+     */
+    private function flushEliminaProceso($proceso, $bloque) {
+
+        $disponible = intval($bloque->getDisponible()) + intval($proceso->getMemoria());
+        $usado = intval($bloque->getUsado()) - intval($proceso->getMemoria());
+
+
+        $em = $this->getDoctrine()->getManager();
+
+        $bloque->setDisponible($disponible);
+        $bloque->setUsado($usado);
+
+        $em->persist($bloque);
+        $em->remove($proceso);
+
+        $em->flush();
+        $this->eliminaProcesoM = 'proceso eliminado correctamente';
 
         return true;
     }
