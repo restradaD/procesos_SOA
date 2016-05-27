@@ -484,12 +484,12 @@ class ConfiguracionController extends Controller {
 
 
         if (intval($politica) === 1) { //Mejor ajuste
-            return $this->mejorAjuste($form, $configuracion, $ejecutar);
+            return $this->politicaDeAjuste($form, $configuracion, $ejecutar, 'mejorAjuste');
         } elseif (intval($politica) === 2) { //Primer ajuste
-            return $this->mejorAjuste($form, $configuracion, $ejecutar);
+            return $this->politicaDeAjuste($form, $configuracion, $ejecutar, 'primerAjuste');
         }
         //Peor ajuste
-        return $this->mejorAjuste($form, $configuracion, $ejecutar);
+        return $this->politicaDeAjuste($form, $configuracion, $ejecutar, 'peorAjuste');
     }
 
     /**
@@ -499,7 +499,7 @@ class ConfiguracionController extends Controller {
      * @param entity $ejecutar
      * @return boolean
      */
-    private function mejorAjuste($form, $configuracion, $ejecutar) {
+    private function politicaDeAjuste($form, $configuracion, $ejecutar, $ajuste) {
 
         $em = $this->getDoctrine()->getManager();
         $bloques = $em->getRepository('Wbc\AdministratorBundle\Entity\Bloque')->findBy(array('configuracion' => $configuracion->getId()));
@@ -515,10 +515,10 @@ class ConfiguracionController extends Controller {
 
         foreach ($bloques as $bloque) {
 
-            if (empty($bloque->getDisponible())) {
-                $resta = intval($bloque->getEspacio()) - intval($form->getMemoria());
-            } else {
+            if (!empty($bloque->getDisponible()) || $bloque->getDisponible() >= 0) {
                 $resta = intval($bloque->getDisponible()) - intval($form->getMemoria());
+            } else {
+                $resta = intval($bloque->getEspacio()) - intval($form->getMemoria());
             }
 
             if ($resta >= 0) {
@@ -531,23 +531,43 @@ class ConfiguracionController extends Controller {
             $this->lastError = 'El proceso es demasiado grande no cambe en ningun bloque de memoria';
             return false;
         }
-        $menor = min($operaciones);
 
-        return $this->guardaBloque($menor[0], $pasan, $ejecutar, $form->getMemoria());
+        $operacionClave = $this->getBloqueSegunPolitica($operaciones, $ajuste);
+
+        return $this->guardaBloque($operacionClave[0], $pasan, $ejecutar, $form->getMemoria());
+    }
+
+    /**
+     * Elige la operacion segun la politica de ajuste
+     * @param array $operaciones
+     * @param string $ajuste
+     * @return int
+     */
+    private function getBloqueSegunPolitica($operaciones, $ajuste) {
+
+        if ($ajuste === 'mejorAjuste') {
+            $menor = min($operaciones);
+            return $menor;
+        } elseif ($ajuste === 'mejorAjuste') {
+            
+        }
+
+        $mayor = max($operaciones);
+        return $mayor;
     }
 
     /**
      * Trae la entitdad bloque segun la politica para guardar el registro
-     * @param int $menor
+     * @param int $operacionClave
      * @param array $bloques
      * @param entity $ejecutar
      * @return boolean
      */
-    private function guardaBloque($menor, $bloques, $ejecutar, $ocupa) {
+    private function guardaBloque($operacionClave, $bloques, $ejecutar, $ocupa) {
 
         $entidadBloque = "";
         foreach ($bloques as $bloque) {
-            if (intval($bloque["resultado"]) === intval($menor)) {
+            if (intval($bloque["resultado"]) === intval($operacionClave)) {
                 $entidadBloque = $bloque["bloque"];
                 break;
             }
