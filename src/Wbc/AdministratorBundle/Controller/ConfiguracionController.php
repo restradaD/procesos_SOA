@@ -43,8 +43,21 @@ class ConfiguracionController extends Controller {
      * @return type
      */
     public function terminalAction() {
+
+        $configuracion = $this->traeUltimaConfiguracion();
+        $bloques = "vacio";
+        //validar despues que si esta activo o ya paso la fecha de expiracion
+
+        if (!empty($configuracion)) {
+            $ultimaConfiguracion = $configuracion;
+            $bloques = $this->getBloquesByConfiguracion($ultimaConfiguracion->getId());
+        }
+
         $this->get('Services')->setMenuItem('Terminal');
-        return $this->render('configuracion/terminal.html.twig');
+        return $this->render('configuracion/terminal.html.twig', array(
+                    'configuracion' => $ultimaConfiguracion,
+                    'bloques' => $bloques,
+        ));
     }
 
     /**
@@ -278,7 +291,7 @@ class ConfiguracionController extends Controller {
         }
         return true;
     }
-    
+
     /**
      * Crea una nueva entidad de Configuracion
      * @return boolean
@@ -316,8 +329,8 @@ class ConfiguracionController extends Controller {
             $this->lastError = $ex->getMessage();
             return false;
         }
-    } 
-    
+    }
+
     /**
      * Crea nueva entidad bloque
      * @param array $bloques
@@ -367,6 +380,68 @@ class ConfiguracionController extends Controller {
         }
 
         return true;
+    }
+
+    private function traeUltimaConfiguracion() {
+        $em = $this->getDoctrine()->getManager();
+
+        $configuraciones = $em->getRepository('WbcAdministratorBundle:Configuracion')->findAll();
+
+        $total = count($configuraciones);
+
+        if ($total >= 1) {
+            $last = $total - 1;
+            if ($configuraciones[$last]->getActivo()) {
+                return $configuraciones[$last];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Trae los bloques por configuracion
+     * @param int $configuracionId
+     * @return array|string
+     */
+    public function getBloquesByConfiguracion($configuracionId) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery("SELECT b.id, b.espacio, b.creacion FROM Wbc\AdministratorBundle\Entity\Bloque b JOIN b.configuracion c WHERE c.id = :configuracionId ORDER BY b.id ASC");
+        $query->setParameter('configuracionId', $configuracionId);
+        $data = $query->getResult();
+
+        if (empty($data)) {
+            return "vacio";
+        }
+
+        $result = null;
+        foreach ($data as $bloque) {
+            $bloque["creacion"] = $bloque["creacion"]->format("d-m-Y H:i:s");
+            $result[] = $bloque;
+        }
+//        dump($result);
+//        dump($this->getColoresHex()); exit();
+        return $result;
+    }
+
+    /**
+     * Trae un color en exadecimal aleatoreamente
+     * @return string
+     */
+    private function getColoresHex() {
+        $colores = [
+            "#F0F8FF", "#FAEBD7", "#00FFFF", "#0000FF", "#8A2BE2", "#A52A2A", "#7FFF00", "#D2691E", "#6495ED", "00FFFF",
+            "#00008B", "#B8860B", "#A9A9A9", "#A9A9A9", "#006400", "#BDB76B", "#8B008B", "#FF8C00", "#8B0000", "#E9967A",
+            "#00CED1", "#FF1493", "#1E90FF", "#228B22", "#FFD700", "#DAA520", "#008000", "#ADFF2F", "#CD5C5C", "#4B0082",
+            "#7CFC00", "#ADD8E6", "#E0FFFF", "#90EE90", "#FFB6C1", "#FFA07A", "#87CEFA", "#00FF00", "#32CD32", "#0000CD",
+            "#808000", "#FFA500", "#98FB98", "#CD853F", "#FF0000", "#FFFF00", "#00FF7F", "#F5DEB3", "#800080", "#3CB371"];
+
+        $ramdom = rand(0, 49);
+
+        $color = $colores[$ramdom];
+
+        return $color;
     }
 
 }
