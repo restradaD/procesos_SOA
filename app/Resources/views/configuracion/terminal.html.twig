@@ -4,19 +4,12 @@
 
     {{ parent() }}
 
-    <h1 class="page-title">Sistemas operativos abiertos <small><small>Politicas de ajuste</small></small></h1>
+    <h1 class="page-title">Sistemas operativos abiertos <small><small>Politicas de ajuste</small></small></h1> 
+    <div class="row"> 
 
-    <div class="row">
-
-
-        <div class="col-md-5">
-
-            <legend>Configuración</legend> 
-
-
-            <form  method="post" id="carga_archivo" >
-
-
+        <div class="col-md-5"> 
+            <legend>Configuración</legend>   
+            <form  method="post" id="carga_archivo" > 
                 <div class="form-group">
                     <label for="exampleInputFile">Cargar Archivo</label>
                     <input type="file" id="selectDocument" name="ruta_config">
@@ -26,20 +19,10 @@
 
                 <input type="hidden" id="archivo_conf" name="archivo_conf"> 
                 <input type="hidden" id="ruta" name="ruta"> 
-            </form>
-
-
+            </form> 
         </div>
+
         <div class="col-md-7">
-            <div id="chart_div" style="width: 500px; height: 500px;"></div>
-        </div> 
-
-
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-6">
             <section class="widget">
 
                 <div class="widget-body">
@@ -84,9 +67,15 @@
                     {{ form_end(form) }}
                 </div>
             </section>
-        </div>
+        </div> 
+
     </div>
 
+    <div class="row">     
+        <div class="col-md-12">
+            <div id="chart_div" style="width: 1000px; height: 500px;"></div>
+        </div>    
+    </div> 
 
     {% javascripts output='js/forms.js' filter="?jsqueeze"
     'bundles/wbctheme/js/form-elements.js'%}
@@ -98,7 +87,11 @@
 
 {% block extrascripts %}
     <script>
+
+        data_grafica = "";
         //google charts
+        google.charts.load('current', {'packages': ['corechart']});
+        generarGraficas();
 
         $("ejecutar_nombreProceso").prop('required', true);
         $("ejecutar_tiempo").prop('required', true);
@@ -159,6 +152,55 @@
                 type: 'error',
                 showCloseButton: true
             });
+        }
+
+
+        function generarGraficas() {
+
+            var host = window.location.host;
+            var protocol = window.location.protocol;
+            var url_set = protocol + "//" + host + "/administrator/configuracion/grafica";
+
+            var cars = ["Saab", "Volvo", "BMW"];
+
+            $.ajax({
+                dataType: 'json',
+                type: "POST",
+                url: url_set,
+                data: JSON.stringify(cars),
+                success: function (response) {
+
+                    if (response.code == 200) {
+                        data_grafica = response.recordset;
+                        google.charts.setOnLoadCallback(bloques_drawChart);
+                    } else {
+                        showErrorMessage(response);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var response = JSON.parse(jqXHR.responseText);
+                    showErrorMessage(response);
+
+
+                    //alert('principal en ele error ');
+                }
+            });
+        }
+
+
+        function bloques_drawChart() {
+
+            var data = google.visualization.arrayToDataTable(data_grafica);
+
+
+            var options = {
+                title: 'Memoria total particionada',
+                hAxis: {title: 'Bloques', titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
         }
 
     </script>

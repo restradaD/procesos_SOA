@@ -31,3 +31,8 @@ configuracion_carga:
     path:     /carga
     defaults: { _controller: "WbcAdministratorBundle:Configuracion:agregaConfiguracion" }
     methods:  [GET, POST]
+
+configuracion_grafica:
+    path:     /grafica
+    defaults: { _controller: "WbcAdministratorBundle:Configuracion:crearGraficas" }
+    methods:  [GET, POST]

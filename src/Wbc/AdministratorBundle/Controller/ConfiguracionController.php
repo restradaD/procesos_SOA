@@ -439,7 +439,7 @@ class ConfiguracionController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("SELECT b.id, b.espacio, b.creacion FROM Wbc\AdministratorBundle\Entity\Bloque b JOIN b.configuracion c WHERE c.id = :configuracionId ORDER BY b.id ASC");
+        $query = $em->createQuery("SELECT b.id, b.espacio, b.creacion, b.usado, b.disponible FROM Wbc\AdministratorBundle\Entity\Bloque b JOIN b.configuracion c WHERE c.id = :configuracionId ORDER BY b.id ASC");
         $query->setParameter('configuracionId', $configuracionId);
         $data = $query->getResult();
 
@@ -452,8 +452,7 @@ class ConfiguracionController extends Controller {
             $bloque["creacion"] = $bloque["creacion"]->format("d-m-Y H:i:s");
             $result[] = $bloque;
         }
-//        dump($result);
-//        dump($this->getColoresHex()); exit();
+
         return $result;
     }
 
@@ -600,11 +599,6 @@ class ConfiguracionController extends Controller {
      * @return boolean
      */
     private function flushEntityBloque($ejecutar, $bloque, $usado, $disponible) {
-//        dump($usado);
-//        dump($disponible);
-//        dump($bloque);
-//        dump($ejecutar);
-//        exit();
 
         $now = new \DateTime('now');
         $ejecutar->setCreacion($now);
@@ -677,4 +671,65 @@ class ConfiguracionController extends Controller {
     }
 
     //FIN DE LAS POLITICAS DE AJUSTE
+
+
+    public function crearGraficasAction(Request $request) {
+
+        try {
+            $data = $this->dataGrafica();
+
+            if ($data === false) {
+                $code = 500;
+                $response = array('msg' => 'Internal Error', 'code' => $code, 'recordset' => null, 'error' => $this->lastError);
+            } else {
+                $code = 200;
+                $response = array('msg' => "Datos de grafica", 'code' => $code, 'recordset' => $data, 'error' => null);
+            }
+        } catch (Exception $ex) {
+            $code = 404;
+            $response = array('msg' => 'Not found', 'code' => $code, 'recordset' => null, 'error' => $ex->getMessage());
+        }
+
+        return new JsonResponse($response, $code);
+    }
+
+    private function dataGrafica() {
+
+
+        $configuracion = $this->traeUltimaConfiguracion();
+        $bloques = "vacio";
+        //validar despues que si esta activo o ya paso la fecha de expiracion
+
+        if (!empty($configuracion)) {
+            $ultimaConfiguracion = $configuracion;
+            $bloques = $this->getBloquesByConfiguracion($ultimaConfiguracion->getId());
+
+
+            if (empty($bloques)) {
+
+                $this->lastError = 'No existen bloques disponibles';
+                return false;
+            }
+            $prueba[] = ['Fecha', 'Memoria', ["role" => "style"], ["role" => "annotation"]];
+
+            foreach ($bloques as $bloque) {
+                $prueba[] = [$bloque['creacion'], intval($bloque['espacio']), $this->getColoresHex(), 'ID: ' . $bloque['id']];
+            }
+
+            return $prueba;
+        }
+
+        $this->lastError = 'No existe configuracion activa';
+        return false;
+
+
+        $prueba = array();
+        $prueba[0] = ['Fecha', 'Memoria', ["role" => "style"], ["role" => "annotation"]];
+        $prueba[1] = ['Copper', 8.94, '#b87333', 'Cu'];
+        $prueba[2] = ['Silver', 10.49, 'silver', 'Ag'];
+        $prueba[3] = ['Platinum', 21.45, 'color: #e5e4e2', 'Pt'];
+
+        return $prueba;
+    }
+
 }
