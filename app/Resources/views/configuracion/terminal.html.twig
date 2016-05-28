@@ -7,7 +7,7 @@
     <h1 class="page-title">Sistemas operativos abiertos <small><small>Politicas de ajuste</small></small></h1> 
     <div class="row"> 
 
-        <div class="col-md-5"> 
+        <div class="col-md-4"> 
             <legend>Configuración</legend>   
             <form  method="post" id="carga_archivo" > 
                 <div class="form-group">
@@ -22,7 +22,7 @@
             </form> 
         </div>
 
-        <div class="col-md-7">
+        <div class="col-md-8">
             <section class="widget">
 
                 <div class="widget-body">
@@ -75,6 +75,19 @@
         <div class="col-md-12">
             <div id="chart_div" style="width: 1000px; height: 500px;"></div>
         </div>    
+        <div class="col-md-12">
+            <section class="widget">
+                <header>
+                    <h5>
+                        Proyecto <span class="fw-semi-bold">Sistemas operativos abiertos</span>
+                    </h5> 
+                </header> 
+
+                <div class="widget-body mt-xlg">
+                    <div id="rickshaw" class="chart-overflow-bottom"></div>
+                </div>
+            </section>
+        </div>
     </div> 
 
     {% javascripts output='js/forms.js' filter="?jsqueeze"

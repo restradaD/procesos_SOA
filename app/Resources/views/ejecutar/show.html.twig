@@ -17,6 +17,18 @@
         <tr>
             <th width="100px">Memoria</th>
             <td width="100px">{{ ejecutar.memoria }}</td>
+        </tr> 
+        <tr>
+            <th width="100px">Politica</th>
+            <td width="100px">{{ ejecutar.bloque.configuracion.politica.nombre }}</td>
+        </tr>
+        <tr>
+            <th width="100px">Palabra Reservada</th>
+            <td width="100px">{{ ejecutar.palabraReservada.nombre }}</td>
+        </tr>
+        <tr>
+            <th width="100px">Usuario</th>
+            <td width="100px">{{ ejecutar.user.firstName }} {{ ejecutar.user.lastName }}</td>
         </tr>
         <tr>
             <th width="100px">Terminado</th>
@@ -42,11 +54,11 @@
             {% for innerChange in log.logChanges %}
                 <tr>
                     {% if innerChange.old != '' or innerChange.new != '' %}
-                    <td colspan="4">
-                        <span class="">
-                            {% trans with {'%field%': innerChange.name, '%from%': innerChange.old | default('NOTHING') , '%to%': innerChange.new | default('NOTHING') } %} <span class='label label-info'>%field%</span> from <strong>%from%</strong> to <strong>%to%</strong> {% endtrans %}
-                        </span>
-                    </td>
+                        <td colspan="4">
+                            <span class="">
+                                {% trans with {'%field%': innerChange.name, '%from%': innerChange.old | default('NOTHING') , '%to%': innerChange.new | default('NOTHING') } %} <span class='label label-info'>%field%</span> from <strong>%from%</strong> to <strong>%to%</strong> {% endtrans %}
+                            </span>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}
